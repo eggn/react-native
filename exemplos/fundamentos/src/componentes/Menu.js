@@ -19,6 +19,7 @@ import FlexBoxDemo from './flexBox/FlexBoxDemo'
 import AlignItemsBasics  from './flexBox/AlignItems'
 import FlatListEx from './flexBox/FlatListEx'
 import ExercicioFlex from './flexBox/ExercicioFlex'
+import ExemploPicker from './PickerEx'
 
 console.disableYellowBox = true;
 
@@ -84,6 +85,7 @@ export default function AppComMenu() {
                 <Drawer.Screen name="Flex Box (FlatList)" component={(props) => renderMeusComponentesFlex(props, () => <FlatListEx />)} />
                 <Drawer.Screen name="Flex Box (Exercicio)" component={(props) => renderMeusComponentesFlex(props, () => <ExercicioFlex />)} />
                 <Drawer.Screen name="FlexBox Demo" component={(props) => renderMeusComponentesFlex(props, () => <FlexBoxDemo />)} />
+                <Drawer.Screen name="Componente Picker" component={(props) => renderMeusComponentes(props, () => <ExemploPicker />)} />
 
             </Drawer.Navigator>
         </NavigationContainer>

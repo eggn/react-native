@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet,Platform } from 'react-native'
 
 
 export default class Display extends Component {
@@ -7,18 +7,18 @@ export default class Display extends Component {
 
     renderExpressao = () => {
         let resultado = this.props.displayResultado;
-        let fontSize = 64
+        let fontSize = 48
         let fontWeight = '500'
         let color = 'black'
         if (resultado === '0') {
-            fontSize = 44
+            fontSize = 32
             color = '#808080'
         }
         let display = (this.props.displayExpressao + '').toString()
-        if (display && display.length >= 10 && display.length <= 16) fontSize = 44
-        if (display && display.length >= 16) fontSize = 34
+        if (display && display.length >= 10 && display.length <= 16) fontSize = 28
+        if (display && display.length >= 16) fontSize = 24
         if(this.props.igualPressionado){
-            fontSize = 44
+            fontSize = 32
             color = '#808080'
         }
         return (
@@ -27,19 +27,19 @@ export default class Display extends Component {
     }
     renderResultdo = () => {
         let resultado = this.props.displayResultado;
-        let fontSize = 64
+        let fontSize = 48
         let fontWeight = '500'
         let color = 'black'
         if (resultado !== '0') {
             resultado = '=' + resultado
-            fontSize = 44
+            fontSize = 32
             color = '#808080'
         }
         let display = (this.props.displayExpressao + '').toString()
-        if (display && display.length >= 10 && display.length <= 16) fontSize = 34
-        if (display && display.length >= 17) fontSize = 20
+        if (display && display.length >= 10 && display.length <= 16) fontSize = 24
+        if (display && display.length >= 17) fontSize = 22
         if(this.props.igualPressionado){
-            fontSize = 64
+            fontSize = 48
             color = 'black'
         }
         return (
@@ -51,7 +51,7 @@ export default class Display extends Component {
             <View style={styles.container}>
                 <View style={styles.display}>
                     {this.renderExpressao()}
-                    {this.renderResultdo()}
+                    {this.renderResultdo()}                    
                 </View>
                 <View style={{
                     borderBottomColor: 'lightgray',
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     container: {
         flex: .2,
         backgroundColor: '#f0ffff',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
     },
     display: {
         alignItems: 'flex-end',

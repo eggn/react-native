@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Dimensions, View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, ImagePropTypes } from 'react-native'
+import React from 'react'
+import { Dimensions, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 const larguraTela = Dimensions.get('window').width
 const altura = Dimensions.get('window').height
@@ -22,7 +22,8 @@ export const Botao = ({ label, operadorIgual, operador, onClick }) => {
 const styles = StyleSheet.create({
     container: {
         width: (larguraTela / 4) ,
-        height: (larguraTela / 5) ,
+       // height: (larguraTela / 5) ,
+       height: '20%',
         backgroundColor: '#f0ffff',
         alignItems: 'center',
         justifyContent: 'center',

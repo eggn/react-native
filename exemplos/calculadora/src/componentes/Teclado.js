@@ -26,9 +26,6 @@ export default class Teclado extends Component {
                 <Botao label={'0'} onClick={this.props.onClick} />
                 <Botao label={'.'} onClick={this.props.onClick} />
                 <Botao label={'='} operadorIgual onClick={this.props.onClick} />
-
-
-
             </View>
         )
     }
