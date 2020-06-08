@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, FlatList, StyleSheet, Text } from 'react-native';
+import { SafeAreaView, View, FlatList, StyleSheet, Text, Platform } from 'react-native';
 import Constants from 'expo-constants';
 
 const DADOS = [
