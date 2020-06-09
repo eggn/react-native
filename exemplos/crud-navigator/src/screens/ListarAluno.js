@@ -37,16 +37,9 @@ export default class ListarAluno extends Component {
        ...initialState
     }
     remover = (item) =>{         
-       let alunos = this.state.alunos       
-       alunos = alunos.filter(aluno => aluno.matricula != item.matricula)
-       this.setState({alunos})
+       let alunosAtualizado = this.state.alunos.filter(aluno => aluno.matricula != item.matricula)
+       this.setState({alunos: alunosAtualizado})
     }
-    
-
-    usuarioCadastrado = (alunos) => {
-       this.props.navigation.navigate('Home', {alunos})
-    }
-
 
     renderItem = (item) => {
         return (
@@ -67,7 +60,7 @@ export default class ListarAluno extends Component {
                 </View>
             </View>
         )
-    }
+    }   
 
     render() {
         const { navigation } = this.props        
@@ -84,8 +77,7 @@ export default class ListarAluno extends Component {
                 <View style={styles.rowButtom}>
                     <TouchableOpacity style={{ marginRight: 20 }} 
                                       onPress={() => navigation.navigate('Cadastrar', 
-                                        { alunos: this.state.alunos, 
-                                          usuarioCadastradoSuccess: (props) => this.usuarioCadastrado(props) })}>
+                                        { alunos: this.state.alunos })}>
                         <Text style={styles.botao}>Cadastrar</Text>
                     </TouchableOpacity>
                 </View>

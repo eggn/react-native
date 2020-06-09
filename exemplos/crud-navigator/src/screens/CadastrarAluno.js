@@ -43,12 +43,12 @@ export default class CadastrarAluno extends Component {
             idade: this.state.idade
         })
 
-        Alert.alert('SUCESSO!',
-            'Operação realizada com sucesso!',
-            [{ text: "OK", onPress: () => this.props.route.params.usuarioCadastradoSuccess(alunos) }])        
-        
         if (Platform.OS == 'web') {
-            this.props.route.params.usuarioCadastradoSuccess(alunos)
+            this.props.navigation.navigate('Home', {alunos})
+        }else{
+            Alert.alert('SUCESSO!',
+                'Operação realizada com sucesso!',
+                [{ text: "OK", onPress: () => this.props.navigation.navigate('Home', {alunos}) }])
         }
     }
     render() {       
