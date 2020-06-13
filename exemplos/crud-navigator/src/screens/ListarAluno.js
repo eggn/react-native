@@ -62,8 +62,17 @@ export default class ListarAluno extends Component {
         )
     }   
 
+    componentDidUpdate(){
+        console.log('componentDidUpdate', this.props.route.params?.alunos, this.state.alunos)
+        if(this.props.route.params?.alunos && this.state.alunos.length < this.props.route.params?.alunos.length ){
+            console.log('componentDidUpdate2', this.props.route.params?.alunos, this.state.alunos)
+            this.setState({alunos: this.props.route.params.alunos})  
+            this.props.navigation.setParams({alunos: null})
+        } 
+    }
+
     render() {
-        const { navigation } = this.props        
+        const { navigation } = this.props                
         return (
             <View style={styles.container}>
                 <View style={{ flex: .9 }}>
@@ -77,7 +86,7 @@ export default class ListarAluno extends Component {
                 <View style={styles.rowButtom}>
                     <TouchableOpacity style={{ marginRight: 20 }} 
                                       onPress={() => navigation.navigate('Cadastrar', 
-                                        { alunos: this.state.alunos })}>
+                                        { alunos: [...this.state.alunos] })}>
                         <Text style={styles.botao}>Cadastrar</Text>
                     </TouchableOpacity>
                 </View>
