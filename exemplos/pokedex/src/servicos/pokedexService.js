@@ -19,9 +19,10 @@ export async function consultarPokedex() {
 
 export async function consultarSpecies(id) {
     const servico = API.pokeapi + `pokemon-species/${id}/`
+    console.log('consultarSpecies ',servico)
     return await axios.get(servico)
         .then(function (response) {            
-            return response.data.pokemon
+            return response.data
         })
         .catch(function (error) {
             // handle error
@@ -32,11 +33,12 @@ export async function consultarSpecies(id) {
         });
 }
 
-export async function consultarPkemon(id) {
+export async function consultarPokemon(id) {
     const servico = API.pokeapi + `pokemon/${id}/`
+    console.log('consultarPokemon ',servico)
     return await axios.get(servico)
         .then(function (response) {            
-            return response.data.pokemon
+            return response.data
         })
         .catch(function (error) {
             // handle error

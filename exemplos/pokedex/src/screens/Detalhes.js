@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Dimensions, PanResponder, Animated, Text, Image } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import {consultarSpecies, consultarPokemon} from '../servicos/pokedexService'
 
 const { height } = Dimensions.get('window');
 
@@ -13,27 +14,64 @@ function HomeScreen() {
   );
 }
 
-function SettingsScreen() {
+function Status({stats}) {   
+  function nomeStatus(nome) {
+    switch (nome) {
+      case 'speed':
+        return 'Speed';
+      case 'special-defense':
+        return 'Sp. Def';        
+      case 'special-attack':
+        return 'Sp. Att';
+      case 'defense':
+        return 'Defense';
+      case 'attack':
+        return 'Attack';
+      case 'hp':
+        return 'HP';
+      default:
+        return 'Total';      
+    }
+  }
+  function total(stats){
+    let total = 0
+    stats?.forEach(element => total += element.base_stat)
+    return total
+  }
+
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
+      {stats?.map((item,index)=> {
+        return( 
+          <View key={index}>
+            <Text >{nomeStatus(item.stat.name)}</Text>
+            <Text >{item.base_stat}</Text>
+          </View>
+          )
+        })}
+      <View>
+      <Text>Total</Text>
+        <Text>{total(stats)}</Text>
+      </View>
     </View>
   );
 }
 
-function DetalhesTab() {
+function DetalhesTab(props) {
   const Tab = createMaterialTopTabNavigator();
   return (
 
     <Tab.Navigator
       tabBarOptions={{
         labelStyle: { fontSize: 12, fontFamily: 'Product Sans Bold' },
-        tabStyle: { borderBottomLeftRadius: 20, marginTop: 30 },
-        style: { borderTopLeftRadius: 40, borderTopRightRadius: 40 },
+        tabStyle: { marginTop: 30 },
+        style: { borderTopLeftRadius: 40, borderTopRightRadius: 40},        
+        
+        
       }}>
-      <Tab.Screen name="Sobre" component={HomeScreen} />
-      <Tab.Screen name="Evolução" component={HomeScreen} />
-      <Tab.Screen name="Status" component={SettingsScreen} />
+      <Tab.Screen name="Sobre" component={ _ => <HomeScreen {...props}/>} />
+      <Tab.Screen name="Evolução" component={_ => <HomeScreen {...props}/>} />
+      <Tab.Screen name="Status" component={ _ => <Status stats={props.pokemonDetails?.stats}/> } />
 
     </Tab.Navigator>
 
@@ -54,11 +92,28 @@ export default class Detalhes extends Component {
       bottomHeight: new Animated.Value(500), // min height for bottom pane header,
       deviceHeight: Dimensions.get('window').height,
       isDividerClicked: false,
+      pokemonDetails : null,
+      species: null,
 
       pan: new Animated.ValueXY()
     }
 
   }
+
+  async componentDidMount(){
+     this.carregarDados()
+  }
+  async carregarDados(){
+    console.log('carregarDados', this.props.route.params?.pokemon.id)
+    if(this.props.route.params?.pokemon){
+      const pokemonDetails = await consultarPokemon(this.props.route.params?.pokemon.id)
+      const species = await consultarSpecies(this.props.route.params?.pokemon.id)
+      this.setState({pokemonDetails, species})
+
+    }
+  }
+
+
   _animatedValue = new Animated.Value(240);
 
   _panResponder = PanResponder.create({
@@ -162,7 +217,7 @@ export default class Detalhes extends Component {
           {...this._panResponder.panHandlers}
         >
 
-          <DetalhesTab />
+          <DetalhesTab pokemon ={this.props.route.params.pokemon} species={this.state.species} pokemonDetails={this.state.pokemonDetails} />
 
         </Animated.View>
       </View>
