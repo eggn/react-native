@@ -93,6 +93,10 @@ export default class Pokedex extends Component {
     this.setState({ pokedex: newData });
   }
 
+  onPokemonClick = (pokemon) =>{
+    this.props.navigation.navigate('Detalhes', {pokemon, pokedex: this.state.pokedex})
+  }
+
   render() {
 
     return (
@@ -114,7 +118,7 @@ export default class Pokedex extends Component {
             <View style={{ flex: .8, flexDirection: 'row' }}>
               <FlatList
                 data={this.state.pokedex}
-                renderItem={({ item }) => <PokeItem pokemon={item} navegacao={this.props.navigation} />}
+                renderItem={({ item }) => <PokeItem pokemon={item} onClick={this.onPokemonClick} />}
                 keyExtractor={(item) => item?.num}
                 numColumns={2}
                 onViewableItemsChanged={this.handleLazyLoad}

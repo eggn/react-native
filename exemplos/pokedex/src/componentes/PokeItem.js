@@ -3,10 +3,10 @@ import { StyleSheet, View, Text, Image, Dimensions, ImageBackground, TouchableOp
 import { getCor, hexToRgba } from '../util/Cores'
 
 import pokeball from '../../assets/images/pokeball.png'
-export default function PokeItem({pokemon, navegacao}) {
+export default function PokeItem({pokemon, onClick}) {
     return (
         <TouchableOpacity
-            onPress={() => navegacao.navigate('Detalhes', {pokemon})}
+            onPress={() => onClick(pokemon)}
             style={[styles.container, { backgroundColor: getCor(pokemon.type[0]) }]}>
             <ImageBackground source={pokeball} style={styles.backImage} imageStyle={{ opacity: 0.3 }}>
                 <View style={styles.overlay}>

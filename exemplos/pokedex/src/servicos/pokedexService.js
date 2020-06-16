@@ -48,3 +48,18 @@ export async function consultarPokemon(id) {
             // always executed
         });
 }
+export async function consultarEvolucoes(evolutionChainURL) {
+    
+    console.log('consultarEvolucoes ',evolutionChainURL)
+    return await axios.get(evolutionChainURL)
+        .then(function (response) {            
+            return response.data
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .finally(function () {
+            // always executed
+        });
+}
