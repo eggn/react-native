@@ -5,7 +5,8 @@ export const Entrada = props =>
         <TextInput value={props.input}
             maxLength={10}
             style={styles.input}
-            onChangeText={props.chamarQuandoMudar} />
+            onChangeText={props.chamarQuandoMudar}
+            placeholder='Digite algo...' />
     </View>
 
 const styles =  StyleSheet.create({

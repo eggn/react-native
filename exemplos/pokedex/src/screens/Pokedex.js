@@ -11,6 +11,9 @@ import {
   Alert,
   ImageBackground,
 } from 'react-native';
+
+import * as Animatable from 'react-native-animatable';
+
 import * as Font from 'expo-font';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { consultarPokedex } from '../servicos/pokedexService'
@@ -25,6 +28,8 @@ const estadoInicial = {
   exibirFiltro: false,
   filtroSelecionado: 'Número',
 }
+
+const AnimatableImageBackground = Animatable.createAnimatableComponent(ImageBackground);
 
 export default class Pokedex extends Component {
   state = {
@@ -107,13 +112,20 @@ export default class Pokedex extends Component {
           :
           <View>
             <View style={{ flex: .2, justifyContent: 'center', margin: 12 }}>
-              <Text style={{ fontSize: 32, color: '#000', fontWeight: 'bold', fontFamily: 'Product Sans Bold' }}>Pokedex</Text>
-              <ImageBackground source={pokeball_dark} imageStyle={{ opacity: 0.1 }}
+              <Animatable.Text 
+                animation="bounceInLeft" iterationCount={1} easing='ease-in'
+                style={{ fontSize: 32, color: '#000', fontWeight: 'bold', fontFamily: 'Product Sans Bold' }}>
+                  Pokedex
+              </Animatable.Text >
+              <AnimatableImageBackground
+                animation="rotate" iterationCount={3} easing='ease'
+               
+                source={pokeball_dark} imageStyle={{ opacity: 0.1 }}
                 style={{ width: 300, height: 300, position: 'absolute', right: -120, justifyContent: 'center', alignItems: 'center' }} >
                   <TouchableOpacity onPress={()=> this.sair()}>
                     <Icon name='times' size={30} color='#000' />
                   </TouchableOpacity>
-              </ImageBackground>
+              </AnimatableImageBackground>
             </View>
             <View style={{ flex: .8, flexDirection: 'row' }}>
               <FlatList

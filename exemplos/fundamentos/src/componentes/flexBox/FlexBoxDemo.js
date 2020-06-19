@@ -49,7 +49,7 @@ const FlexBoxDemo = () => {
       height: 50,
       backgroundColor: randomHexColor(),
     };
-    return <View style={sqStyle} />;
+    return <View key={Math.random().toString()} style={sqStyle} />;
   };
   const [squares, setSquares] = useState([Square(), Square(), Square()]);
   return (

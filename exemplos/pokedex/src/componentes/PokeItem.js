@@ -1,11 +1,15 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, Dimensions, ImageBackground, TouchableOpacity } from 'react-native'
+
+import * as Animatable from 'react-native-animatable';
+
 import { getCor, hexToRgba } from '../util/Cores'
 
 import pokeball from '../../assets/images/pokeball.png'
-export default function PokeItem({pokemon, onClick}) {
+const AnimatableTouchableOpacity = Animatable.createAnimatableComponent(TouchableOpacity);
+export default function PokeItem({pokemon, onClick}) {   
     return (
-        <TouchableOpacity
+        <AnimatableTouchableOpacity animation={pokemon.id%2 == 0 ? "bounceInRight" : "bounceInLeft"} iterationCount={1}            
             onPress={() => onClick(pokemon)}
             style={[styles.container, { backgroundColor: getCor(pokemon.type[0]) }]}>
             <ImageBackground source={pokeball} style={styles.backImage} imageStyle={{ opacity: 0.3 }}>
@@ -32,7 +36,7 @@ export default function PokeItem({pokemon, onClick}) {
                 </View>
 
             </ImageBackground>
-        </TouchableOpacity>
+        </AnimatableTouchableOpacity>
     )
     // }
 }

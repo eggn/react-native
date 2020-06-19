@@ -29,6 +29,7 @@ export default class TextoSincronizado extends Component {
 const styles =  StyleSheet.create({
     input: {
         height: 70,
+        width: 100,
         fontSize: 40,
         borderColor: 'gray',
         borderWidth: 1

@@ -3,6 +3,8 @@ import { StyleSheet, View, Dimensions, PanResponder, Animated, Text, Image, Flat
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
+import * as Animatable from 'react-native-animatable';
+
 import {consultarSpecies, consultarPokemon, consultarEvolucoes} from '../servicos/pokedexService'
 import {getCor,hexToRgba, CORES} from '../util/Cores'
 
@@ -42,8 +44,6 @@ function Status({ stats }) {
     status?.forEach(element => total += element.base_stat)
     return total
   }
- 
-
 
   return (
     <View style={{ marginLeft: 10, marginTop:40 }}>
@@ -173,8 +173,9 @@ function DetalhesTab(props) {
     <Tab.Navigator
       tabBarOptions={{
         labelStyle: { fontSize: 12, fontFamily: 'Product Sans Bold' },
-        tabStyle: { marginTop: 30 },
+        tabStyle: { marginTop: 20 },
         style: { borderTopLeftRadius: 40, borderTopRightRadius: 40 },
+        indicatorStyle: { backgroundColor: 'red' },
 
 
       }}>
@@ -201,37 +202,37 @@ export default class Detalhes extends Component {
 
   constructor(props) {
     super(props);
-
+    
     this.state = {
       offset: 0,
       topHeight: 40, // min height for top pane header
-      bottomHeight: new Animated.Value(600), // min height for bottom pane header,
+      bottomHeight: new Animated.Value(400), // min height for bottom pane header,
       deviceHeight: Dimensions.get('window').height,
       isDividerClicked: false,
       pokemonDetails: null,
       species: null,
       evolucoes : null,
       pokemonExibido: null,
-      isLoading: false,
-
+      isLoading: false,   
+      exibirTipos : true,   
       pan: new Animated.ValueXY()
     }
-
   }
 
   async componentDidMount(){
      this.carregarDados()
-  }
-  
+  }  
 
   _animatedValue = new Animated.Value(240);
+  animatedImageScale = new Animated.Value(200);
+  animatedFlatHeight = new Animated.Value(200);
 
   _panResponder = PanResponder.create({
     onMoveShouldSetResponderCapture: () => true,
     onMoveShouldSetPanResponderCapture: () => true,
     onMoveShouldSetPanResponder: (evt, gestureState) => {
-      const isFarLeft = evt.nativeEvent.pageY < Math.floor(height * 0.2);
-      return isFarLeft
+      const isFarTop = evt.nativeEvent.pageY < Math.floor(height * 0.2);
+      return isFarTop
     },
 
     // Initially, set the Y position offset when touch start
@@ -255,61 +256,84 @@ export default class Detalhes extends Component {
 
     onPanResponderRelease: (e, gestureState) => {
       // Do something here for the touch end event
-      this.setState({
-        offset: e.nativeEvent.pageY,
-        isDividerClicked: false
-      })
+      // this.setState({
+      //   offset: e.nativeEvent.pageY,
+      //   isDividerClicked: false
+      // })
 
-      if (gestureState.moveY >= (height / 2)) {
+      if (gestureState.moveY >= 400) {
         console.log('ENTROU AQUI onPanResponderRelease', gestureState.moveY)
         this.handlePop();
       } else {
         console.log('ENTROU AQUI onPanResponderRelease 2', gestureState.moveY)
-        Animated.timing(this._animatedValue, {
-          toValue: height,
-          duration: 250,
-          // useNativeDriver: true,
-        }).start();
-
+        this.handleExpand()
       }
-    },
-    // onPanResponderTerminate: (evt, gestureState) => {
-    //   Animated.timing(this._animatedValue, {
-    //     toValue: 0,
-    //     duration: 250,
-    //    // useNativeDriver: true,
-    //   }).start();
-    // },
+    },    
   });
 
-  handlePop = () => {
-    console.log('handlePop')
-    Animated.timing(this._animatedValue, {
-      toValue: 600,
-      duration: 250,
-      // useNativeDriver: true,
-    }).start(() => {
-      // this._animatedValue.setValue(240);
+  handleExpand = () => {
+    
+    
+    Animated.parallel([
+      Animated.timing(this.animatedImageScale, {
+        toValue: 100,
+        duration: 250,
+      }).start(),      
+      Animated.timing(this.animatedFlatHeight, {
+          toValue: 100,
+          duration: 250,
+      }).start(),
+      Animated.timing(this._animatedValue, {
+        toValue: height-200,
+        duration: 500,     
+      }).start()
+    ]).start(
+      () =>  {
+        this.tipos.bounceOutLeft(250).then(endState => endState.finished ? this.setState({exibirTipos:false}) : true)
+        this.nomePokemon.transitionTo({marginLeft:40, fontSize: 60}, )
+        this.boxTitulo.transitionTo({ marginTop:0 })
+       
+      }
+    )
+  }
 
-    });
+  handlePop = () => {
+   
+    Animated.parallel([
+      Animated.timing(this.animatedImageScale, {
+        toValue: 200,
+        duration: 250,
+      }).start(),
+      Animated.timing(this.animatedFlatHeight, {
+        toValue: 200,
+        duration: 250,
+      }).start(),
+      Animated.timing(this._animatedValue, {
+        toValue: 400,
+        duration: 250,
+      }).start()
+    ]).start(
+      () => {
+        this.setState({ exibirTipos: true })
+        this.nomePokemon.transitionTo({ marginLeft: 0, fontSize: 40 })
+        this.boxTitulo.transitionTo({ marginTop:20 })
+       
+      }
+    )
   }
   onCarrosselItemChanged = ({ viewableItems, changed }) => {
     console.log("Pokemon alerado", viewableItems[0]?.item?.id, this.props.route.params.pokemon.id);
-     //console.log("Changed in this iteration");
+
+    this.setState({ isLoading: true })
+    this.timer = setTimeout(() => {
+      if (this.state.isLoading) {
+        clearTimeout(this.timer)        
+        this.nomePokemon.tada(800)
+       // this.tipos.bounceInRight(800)
+        this.setState({ pokemonExibido: viewableItems[0]?.item, isLoading: false }, () => this.carregarDados())       
+      }
+    }, 300)
     
-   // if(viewableItems[0]?.item) this.carregarDados(viewableItems[0]?.item)
-   //console.log('IS LOADING ', this.state.isLoading)
-   this.setState({isLoading:true})
-   this.timer = setTimeout(()=>{ 
-     console.log('Carregando....', this.state.isLoading)
-     if(this.state.isLoading){
-      clearTimeout(this.timer)
-      console.log('CEREGADO.............', viewableItems[0]?.item.name)
-      this.setState({pokemonExibido : viewableItems[0]?.item, isLoading: false},()=> this.carregarDados())
-     }
-     //this.setState({isLoading: false})
-     // console.log('TIMED OUT ', this.state.isLoading)
-    },300)
   }
 
   async carregarDados(){
@@ -319,14 +343,10 @@ export default class Detalhes extends Component {
       const pokemonDetails = await consultarPokemon(id)
       const species = await consultarSpecies(id)
       const evolucoes = await consultarEvolucoes(species?.evolution_chain?.url)
-      this.setState({pokemonDetails, species, evolucoes})
-     
+      this.setState({pokemonDetails, species, evolucoes})  
 
     }
-    //else{
-      //console.log(' species', pokemonExibido)
-     // this.setState({pokemonDetails, species})
-    //}
+    
   }
 
   otimizarRenderizacao(pokedex, pokemon) {
@@ -336,35 +356,51 @@ export default class Detalhes extends Component {
     console.log('POKEMON EXIBIDO otimizarRenderizacao', pokemon.id, indice )
     return { pokedexOtimizada, indice };
   }
+
+  animarTextPokemonChenged = ref => this.nomePokemon = ref;
+  animarTipos = ref => this.tipos = ref;
+  
+  
   render() {
     const {pokemon, pokedex} = this.props.route.params
     let pokemonExibido = pokemon
     var { pokedexOtimizada, indice } = this.otimizarRenderizacao(pokedex, pokemonExibido); 
     if(this.state.pokemonExibido){
-      console.log('POKEMON EXIBIDO render', this.state.pokemonExibido?.id, pokemonExibido.id, indice )
+      console.log('POKEMON EXIBIDO render', this.state.pokemonExibido?.id, pokemonExibido.id, indice,)
       pokemonExibido = this.state.pokemonExibido
     }
    // console.log('pokedexOtimizada ', this.state.pokemonExibido?.name)
     
     //console.log('POKEMON ', pokemon?.type, this.state?.pokemonExibido)
     //if(!this.state?.pokemonExibido) return (<View><Text>Carregando...</Text></View>)
-    let tipos = pokemonExibido.type 
-          const animatedStyle = {
-            height: this._animatedValue
-          }    
+    let tipos = pokemonExibido.type
+
+    const animatedStyle = {
+      height: this._animatedValue
+    }
+    const animatedScaleStyle = {      
+      height: this.animatedImageScale,
+      width: this.animatedImageScale
+    }
+    const animatedCarrosselHeight = {
+      height: this.animatedFlatHeight
+    }
+
     return (
       <View style={styles.content}>
-
         {/* Top View */}
-        <Animated.View style={[{ minHeight: 80, flex: 1, backgroundColor:getCor(tipos[0]) }, { height: pokemonExibido.topHeight }]}>
+        <Animated.View style={[styles.topView, { backgroundColor:getCor(tipos[0]), height: this.state.topHeight }]}>
           <TouchableOpacity style={{marginTop:30, marginLeft:20}} onPress={()=>this.props.navigation.goBack()}>
-            <Icon name='arrow-left' size={30} color='#fff' />
+            <Icon name='arrow-left' size={20} color='#fff' />
           </TouchableOpacity>
-          <View style={{flex:1, flexDirection:'row', justifyContent:'space-between', marginHorizontal:20, marginTop:20}}>
-            <Text style={{color:'#FFF', fontFamily:'Product Sans Bold', fontSize:34, fontWeight:'bold'}}>{pokemonExibido.name}</Text>
-            <Text style={{color:'#FFF', fontFamily:'Product Sans Bold', fontSize:24}}>#{pokemonExibido.num}</Text>
-          </View>
-          <View style={{ flexDirection: 'row' }}>
+          <Animatable.View ref = { ref => this.boxTitulo = ref}
+             style={{flex:1, flexDirection:'row', justifyContent:'space-between', marginHorizontal:20, marginTop:20}}>
+            <Animatable.Text ref={this.animarTextPokemonChenged} 
+                style={{color:'#FFF', fontFamily:'Product Sans Bold', fontSize:40, fontWeight:'bold'}}>{pokemonExibido.name}
+            </Animatable.Text>
+            {this.state.exibirTipos && <Text style={{color:'#FFF', fontFamily:'Product Sans Bold', fontSize:24}}>#{pokemonExibido.num}</Text>}
+          </Animatable.View>
+          {this.state.exibirTipos && <Animatable.View style={{ flexDirection: 'row' }} ref={this.animarTipos}>
             {tipos.map((item, index) => {
               return (
                 <View key={index} style={{ backgroundColor: '#fff', borderRadius: 14, flexDirection: 'column', width: '22%', marginLeft: 20 }}>
@@ -376,11 +412,31 @@ export default class Detalhes extends Component {
                 </View>
               )
             })}
-
-
-          </View>
-          
+          </Animatable.View>  
+          }         
+          <Animated.View style={[styles.carrosselContainer, animatedCarrosselHeight]}>
             
+            <FlatList
+              data={pokedexOtimizada}
+              renderItem={({item})=>{
+                return (
+                  <Animated.View key={item.id} style={[{ alignItems:'center',   width:Math.floor(width),}, ]}>                       
+                    <Animated.Image  
+                      style={[styles.image,animatedScaleStyle]} 
+                      source={{ uri: item.img }} />
+                  </Animated.View>
+                )
+              }}
+              keyExtractor={(item) => item.id.toString()}
+              horizontal
+              initialScrollIndex={indice}
+              showsHorizontalScrollIndicator={false}
+              onViewableItemsChanged={this.onCarrosselItemChanged}
+              viewabilityConfig={{
+                itemVisiblePercentThreshold: 50
+              }}
+            />
+          </Animated.View>
         </Animated.View>
 
         {/* Divider */}
@@ -395,27 +451,7 @@ export default class Detalhes extends Component {
           style={[styles.animatedBox, animatedStyle,{backgroundColor:getCor(tipos[0])}]}
           {...this._panResponder.panHandlers}
         >
-          <View style={styles.carrosselContainer}>
-            
-            <FlatList
-              data={pokedexOtimizada}
-              renderItem={({item})=>{
-                return (
-                  <View key={item.id} style={{ alignItems:'center',   width:Math.floor(width)   }}>                       
-                    <Image style={styles.image} source={{ uri: item.img }} />
-                  </View>
-                )
-              }}
-              keyExtractor={(item) => item.id.toString()}
-              horizontal
-              initialScrollIndex={indice}
-              showsHorizontalScrollIndicator={false}
-              onViewableItemsChanged={this.onCarrosselItemChanged}
-              viewabilityConfig={{
-                itemVisiblePercentThreshold: 50
-              }}
-            />
-          </View>
+          
 
           <DetalhesTab pokemon={pokemonExibido} 
                        species={this.state.species} 
@@ -436,18 +472,26 @@ const styles = StyleSheet.create({
   },
   animatedBox:
   {
-    minHeight: 600,
+    minHeight: 400,
     //backgroundColor: 'red',
     //borderTopLeftRadius: 40,
     //borderTopRightRadius: 40,
+    zIndex:0
+  },
+  topView:{ 
+    minHeight: 200, 
+    flex: 1, 
+    //backgroundColor:getCor(tipos[0]),
+    zIndex:2 
   },
   image: {
     width: 200,
-    height: 200,
+    height: 200,  
+    //resizeMode:'cover'  
   },
   carrosselContainer: {
     //flex:.5,
-    height: 200,
+    //height: 200,
     backgroundColor: 'rgba(0,0,0,0.0)',
     //borderColor: '#ebebeb',
     //borderWidth: 1,
@@ -463,8 +507,8 @@ const styles = StyleSheet.create({
     // top:0,
     // left:0
     position: "relative",
-    top: 30,
-    left: 0,
+    bottom: -30,
+    //left: 0,
     zIndex: 1,
 
   },

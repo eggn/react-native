@@ -71,21 +71,54 @@ export default function AppComMenu() {
             <Drawer.Navigator initialRouteName="Home">
                 <Drawer.Screen name="Home" component={HomeScreen} />
 
-                <Drawer.Screen name="Primeiro componente" component={(props) => renderMeusComponentes(props, () => <Cat />)} />
-                <Drawer.Screen name="Variaveis no componente" component={(props) => renderMeusComponentes(props, () => <CatMaru />)} />
-                <Drawer.Screen name="Funcoes no componente" component={(props) => renderMeusComponentes(props, () => <CatFunctionCall />)} />
-                <Drawer.Screen name="Customizando um componente" component={(props) => renderMeusComponentes(props, () => <MeuTextInput />)} />
-                <Drawer.Screen name="Comunicacao direta entre comp." component={(props) => renderMeusComponentes(props, () => <CatProps altura={100} largura={100} />)} />
-                <Drawer.Screen name="Estado (State) de um componente" component={(props) => renderMeusComponentes(props, () => <CatState />)} />
-                <Drawer.Screen name="Comuniccao indireta" component={(props) => renderMeusComponentes(props, () => <ComunicacaoIndireta />)} />
-                <Drawer.Screen name="Flex Box (Basico)" component={(props) => renderMeusComponentesFlex(props, () => <FlexBasico />)} />
-                <Drawer.Screen name="Flex Box (Directions)" component={(props) => renderMeusComponentesFlex(props, () => <FlexDirectionBasics />)} />
-                <Drawer.Screen name="Flex Box (JustifyContent)" component={(props) => renderMeusComponentesFlex(props, () => <JustifyContentBasics />)} />
-                <Drawer.Screen name="Flex Box (AlignItems)" component={(props) => renderMeusComponentesFlex(props, () => <AlignItemsBasics />)} />
-                <Drawer.Screen name="Flex Box (FlatList)" component={(props) => renderMeusComponentesFlex(props, () => <FlatListEx />)} />
-                <Drawer.Screen name="Flex Box (Exercicio)" component={(props) => renderMeusComponentesFlex(props, () => <ExercicioFlex />)} />
-                <Drawer.Screen name="FlexBox Demo" component={(props) => renderMeusComponentesFlex(props, () => <FlexBoxDemo />)} />
-                <Drawer.Screen name="Componente Picker" component={(props) => renderMeusComponentes(props, () => <ExemploPicker />)} />
+                <Drawer.Screen name="Primeiro componente">
+                    {props => renderMeusComponentes(props, Cat )}
+                </Drawer.Screen>
+                <Drawer.Screen name="Variaveis no componente">
+
+                    {props => renderMeusComponentes(props, CatMaru)}
+                </Drawer.Screen>
+                <Drawer.Screen name="Funcoes no componente">
+
+                    {props => renderMeusComponentes(props,CatFunctionCall)}
+                </Drawer.Screen>
+                <Drawer.Screen name="Customizando um componente">
+
+                    {props => renderMeusComponentes(props, MeuTextInput)}
+                </Drawer.Screen>
+                <Drawer.Screen name="Comunicacao direta entre comp.">
+                    {props => renderMeusComponentes(props, () => <CatProps altura={100} largura={100} />)}
+                </Drawer.Screen>
+                <Drawer.Screen name="Estado (State) de um componente">
+                    {props => renderMeusComponentes(props, () => <CatState />)}
+                </Drawer.Screen>
+                <Drawer.Screen name="Comunicacão indireta">
+                    {props => renderMeusComponentes(props, () => <ComunicacaoIndireta />)}
+                </Drawer.Screen>
+                <Drawer.Screen name="Flex Box (Basico)">
+                    {props => renderMeusComponentesFlex(props, () => <FlexBasico />)}
+                </Drawer.Screen> 
+                <Drawer.Screen name="Flex Box (Directions)">
+                    {props => renderMeusComponentesFlex(props, () => <FlexDirectionBasics />)}
+                </Drawer.Screen>
+                <Drawer.Screen name="Flex Box (JustifyContent)">
+                    {props => renderMeusComponentesFlex(props, () => <JustifyContentBasics />)}
+                </Drawer.Screen>
+                <Drawer.Screen name="Flex Box (AlignItems)">
+                    {props => renderMeusComponentesFlex(props, () => <AlignItemsBasics />)}
+                </Drawer.Screen> 
+                <Drawer.Screen name="Flex Box (FlatList)">
+                    {props => renderMeusComponentesFlex(props, () => <FlatListEx />)}
+                </Drawer.Screen>
+                <Drawer.Screen name="Flex Box (Exercicio)">
+                    {props => renderMeusComponentesFlex(props, () => <ExercicioFlex />)}
+                </Drawer.Screen>
+                <Drawer.Screen name="FlexBox Demo">
+                    {props => renderMeusComponentesFlex(props, () => <FlexBoxDemo />)}
+                </Drawer.Screen>
+                <Drawer.Screen name="Componente Picker">
+                    {props => renderMeusComponentes(props, () => <ExemploPicker />)}                
+                </Drawer.Screen> 
 
             </Drawer.Navigator>
         </NavigationContainer>
