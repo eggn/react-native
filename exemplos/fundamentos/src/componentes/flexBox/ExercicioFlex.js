@@ -63,11 +63,13 @@ export default class ExercicioFlex extends Component {
               keyboardType={Platform.OS == "ios" ? "numbers-and-punctuation" : "numeric"}
               value={this.state.precoEtanol}
               onChangeText={this.onChangeEtanol} />
+
             <Text style={[styles.label, { paddingTop: 12 }]} >Preço do Gasolina:</Text>
             <TextInput maxLength={10} style={styles.input}
               value={this.state.precoGasolina}
               onChangeText={this.onChangeGasolina}
               keyboardType={Platform.OS == "ios" ? "numbers-and-punctuation" : "numeric"} />
+              
             <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: 20 }}>
               <TouchableOpacity style={styles.botao} onPress={this.calculaResultado}>
                 <Icon name="gas-pump" size={30} color={"#fff"} />

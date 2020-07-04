@@ -1,0 +1,72 @@
+GET http://localhost:3005/users/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9saXZpZXJAbWFpbC5jb20iLCJpYXQiOjE1OTMzNDc1NzQsImV4cCI6MTU5MzM1MTE3NCwic3ViIjoiMiJ9.2gpDEHMWsErJgKTySLKEibTyIHtZfHjgCbyGhXC9KVU
+
+####
+POST http://localhost:3005/signup HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9saXZpZXJAbWFpbC5jb20iLCJpYXQiOjE1OTMyOTQ4MjAsImV4cCI6MTU5MzI5ODQyMCwic3ViIjoiMSJ9.SM_2Rcp7w1Uf5DH09wFFkwb74C9lqhAAORWF2ESslec
+
+{
+  "email": "olivier@mail.com",
+  "password": "bestPassw0rd"
+}
+###
+POST  http://localhost:3005/register HTTP/1.1
+content-type: application/json
+
+{
+  "email": "eduardo.nobrega@gmail.com",
+  "password": "123456",
+  "firstname": "Eduardo",
+  "lastname": "Nóbrega"
+}
+####
+POST http://localhost:3005/login HTTP/1.1
+content-type: application/json
+
+{
+  "email": "eduardo.nobrega@gmail.com",
+  "password": "123456"
+}
+
+####
+POST http://localhost:3005/login HTTP/1.1
+content-type: application/json
+
+{
+  "email": "olivier@mail.com",
+  "password": "bestPassw0rd"
+}
+
+####
+PATCH   http://localhost:3005/users/ HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVkdWFyZG8ubm9icmVnYUBtYWlsLmNvbSIsImlhdCI6MTU5MzM1ODA3NiwiZXhwIjoxNTkzMzYxNjc2LCJzdWIiOiIxIn0.oSpAzH8u58de_mEeZ-8CIbhL0JiLgo7a6OH79BPyls8
+
+{
+  "email": "eduardo.nobrega@gmail.com",
+  "password": "123456"
+}
+
+###
+POST http://localhost:3005/tasks HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9saXZpZXJAbWFpbC5jb20iLCJpYXQiOjE1OTMzODY3NjMsImV4cCI6MTU5MzM5MDM2Mywic3ViIjoiMiJ9.ep8GtY3OG2Idn4Tk54vbxdw3uwQgz8uJUyUtkAw4CPc
+
+{
+  "desc": "Teste",  
+  "estimatedAt": "2020-08-28",
+  "userId": 2
+
+}
+###
+GET http://localhost:3005/tasks?userId=2 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9saXZpZXJAbWFpbC5jb20iLCJpYXQiOjE1OTMzODY3NjMsImV4cCI6MTU5MzM5MDM2Mywic3ViIjoiMiJ9.ep8GtY3OG2Idn4Tk54vbxdw3uwQgz8uJUyUtkAw4CPc
+
+###
+GET http://localhost:3005/tasks?userId=1&_sort=estimatedAt&_order=asc&estimatedAt_gte=2020-06-28&estimatedAt=2020-06-28 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVkdWFyZG8ubm9icmVnYUBnbWFpbC5jb20iLCJpYXQiOjE1OTMzODcxNDcsImV4cCI6MTU5MzM5MDc0Nywic3ViIjoiMSJ9.K0_kpdJ6TwxKkoEaKiOil-kICbMRxaZaeGVCGKXMeJ0
+
+###
+GET http://localhost:3005/tasks?doneAt=null HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVkdWFyZG8ubm9icmVnYUBnbWFpbC5jb20iLCJpYXQiOjE1OTMzODcxNDcsImV4cCI6MTU5MzM5MDc0Nywic3ViIjoiMSJ9.K0_kpdJ6TwxKkoEaKiOil-kICbMRxaZaeGVCGKXMeJ0
