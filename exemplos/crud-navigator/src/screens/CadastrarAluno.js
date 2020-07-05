@@ -44,11 +44,11 @@ export default class CadastrarAluno extends Component {
         })
 
         if (Platform.OS == 'web') {
-            this.props.navigation.navigate('Home', {alunos})
+            this.props.navigation.navigate('Alunos', {alunos})
         }else{
             Alert.alert('SUCESSO!',
                 'Operação realizada com sucesso!',
-                [{ text: "OK", onPress: () => this.props.navigation.navigate('Home', {alunos}) }])
+                [{ text: "OK", onPress: () => this.props.navigation.navigate('Alunos', {alunos}) }])
         }
     }
     render() {       

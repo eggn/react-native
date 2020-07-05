@@ -62,10 +62,8 @@ export default class ListarAluno extends Component {
         )
     }   
 
-    componentDidUpdate(){
-        console.log('componentDidUpdate', this.props.route.params?.alunos, this.state.alunos)
-        if(this.props.route.params?.alunos && this.state.alunos.length < this.props.route.params?.alunos.length ){
-            console.log('componentDidUpdate2', this.props.route.params?.alunos, this.state.alunos)
+    componentDidUpdate(){        
+        if(this.props.route.params?.alunos && this.state.alunos.length < this.props.route.params?.alunos.length ){            
             this.setState({alunos: this.props.route.params.alunos})  
             this.props.navigation.setParams({alunos: null})
         } 

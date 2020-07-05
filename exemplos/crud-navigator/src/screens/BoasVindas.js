@@ -9,12 +9,15 @@ import {
 
 
 export default class BoasVindas extends Component {
+    entrar = () => {
+        this.props.navigation.navigate('Alunos')
+    }
     render() {
         return (
             <View style={styles.container}>
                 <Text style={styles.crud}>CRUD</Text>
                 <Text style={styles.bemVindo}> Seja bem-vindo(a)</Text>
-                <TouchableOpacity style={styles.botao} onPress={this.props.entrarClick}>
+                <TouchableOpacity style={styles.botao} onPress={this.entrar}>
                     <Text style={styles.labelBotao}>ENTRAR</Text>
                 </TouchableOpacity>
             </View>
