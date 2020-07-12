@@ -4,6 +4,7 @@ import { Gravatar } from 'react-native-gravatar'
 import {
     DrawerContentScrollView,
     DrawerItemList,
+    DrawerItem
 } from '@react-navigation/drawer'
 import AsyncStorage from '@react-native-community/async-storage'
 import axios from 'axios'
@@ -65,11 +66,19 @@ function Menu(props) {
 
             <DrawerItemList {...props} />
             {/* <DrawerItem {...props} label="Sair" onPress={() => alert('Logout')} /> */}
-            <TouchableOpacity onPress={exit}>
+            <DrawerItem
+                {...props}
+                icon={({ color, size }) => (
+                    <Icon name='sign-out' size={24} color='#800' />
+                )}
+                label=""
+                onPress={exit}
+            />
+            {/* <TouchableOpacity onPress={exit}>
                 <View style={styles.logoutIcon}>
-                    <Icon name='sign-out' size={30} color='#800' />
+                    <Icon name='sign-out' size={24} color='#800' />
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </DrawerContentScrollView>
     )
 }
@@ -110,7 +119,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     logoutIcon: {
-        marginLeft: 10,
+        marginLeft: 20,
         marginBottom: 10
     }
 })
