@@ -49,15 +49,20 @@ export default class TaskList extends Component {
         })
     }
     componentDidMount() {  
-        BackHandler.addEventListener('hardwareBackPress', this.sair);                
+        console.log('DID MOUNT')
+        //Listener para o back do SO
+        BackHandler.addEventListener('hardwareBackPress', this.sair);
+        //Listener para quando mudar a tela carregar novamente os dados
+        this._unsubscribe = this.props.navigation.addListener('focus', this.loadTasks);
         this.loadState();
         //Mudança 2 para integração com o backend
         this.loadTasks();
     }
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.sair);
+        this._unsubscribe();
     }
-
+    
     sair = () => {
         Alert.alert(
             'Sair do Aplicativo',
@@ -134,9 +139,13 @@ export default class TaskList extends Component {
 
     }
 
-    deleteTask = (rowMap, rowKey) => {      
-        let tasks = this.state.tasks.filter(item => item.id != rowKey)
-        this.setState({ tasks }, this.saveState)
+    deleteTask = async (rowMap, rowKey) => {      
+        //let tasks = this.state.tasks.filter(item => item.id != rowKey)
+        //Mudança após integraçao com backend
+        //this.setState({ tasks }, this.saveState)
+        console.log('DELETE ', rowKey, rowMap)
+        await tasksServices.deleteTask(rowKey)
+        await this.loadTasks()
     };
 
     renderRightAction = (data, rowMap) => (
@@ -150,10 +159,15 @@ export default class TaskList extends Component {
         </View>
     );
 
-    onSwipeValueChange = swipeData => {
+    onSwipeValueChange = async swipeData => {
         const { key, value } = swipeData;
-        if (value > Dimensions.get('window').width - 1) {
-            this.deleteTask(null, key)
+        //console.log('DELETE, ', value, Dimensions.get('window').width - 1)
+        if (value  > Dimensions.get('window').width - 20 &&
+            value  < Dimensions.get('window').width -10 && !this.deleting) {
+            this.deleting = true;
+            console.log('DELETE, ', value, Dimensions.get('window').width, this.deleting )
+            await this.deleteTask(null, key)            
+            this.deleting = false
         }
     };
 
@@ -184,7 +198,7 @@ export default class TaskList extends Component {
                     <ImageBackground source={this.getBackgroudImage()} style={styles.backgroud}>
                         <View style={styles.iconBar}>
                             <TouchableOpacity onPress={()=>this.props.navigation.openDrawer()}>
-                                <Icon name={this.state.showDoneTask ? "bars" : "eye-slash"} size={25} color={'#FFF'} />
+                                <Icon name={"bars"} size={25} color={'#FFF'} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={this.toggleFilter}>
                                 <Icon name={this.state.showDoneTask ? "eye" : "eye-slash"} size={25} color={'#FFF'} />

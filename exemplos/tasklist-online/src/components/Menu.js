@@ -19,7 +19,8 @@ function Menu(props) {
         delete axios.defaults.headers.common['Authorization']
         AsyncStorage.removeItem('TaskListState')
         AsyncStorage.removeItem('TaskListAuthToken')
-        BackHandler.exitApp()
+        //BackHandler.exitApp()
+        props.navigation.navigate('Auth')
     }
 
     const exit = () => {
@@ -65,20 +66,17 @@ function Menu(props) {
             </View>
 
             <DrawerItemList {...props} />
-            {/* <DrawerItem {...props} label="Sair" onPress={() => alert('Logout')} /> */}
+            <View style={{height:1, width:'100%', backgroundColor:'lightgray'}}>
+
+            </View>
             <DrawerItem
                 {...props}
                 icon={({ color, size }) => (
-                    <Icon name='sign-out' size={24} color='#800' />
+                    <Icon name='sign-out' size={size} color={color} />
                 )}
-                label=""
+                label="Sair"
                 onPress={exit}
-            />
-            {/* <TouchableOpacity onPress={exit}>
-                <View style={styles.logoutIcon}>
-                    <Icon name='sign-out' size={24} color='#800' />
-                </View>
-            </TouchableOpacity> */}
+            />            
         </DrawerContentScrollView>
     )
 }

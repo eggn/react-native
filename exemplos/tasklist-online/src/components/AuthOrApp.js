@@ -11,7 +11,6 @@ import {getUser} from '../commom/'
 export default class AuthOrApp extends Component {
 
     componentDidMount = async () => {        
-        console.log('AUTHouapp')
         let userData = null
         
         try {
@@ -19,9 +18,8 @@ export default class AuthOrApp extends Component {
         } catch(e) {
             // userData está inválido
         }
-        console.log('AUTHouapp', userData)
-        if(userData && userData.accessToken) {
-            console.log('autenticado')
+        
+        if(userData && userData.accessToken) {            
             axios.defaults.headers.common['Authorization'] = `Bearer ${userData.accessToken}`
             this.props.navigation.navigate('Home')
         } else {

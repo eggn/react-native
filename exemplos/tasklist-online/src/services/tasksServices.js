@@ -23,7 +23,7 @@ export const addTask = async (newTask) => {
             desc: newTask.desc,
             estimateAt: moment(newTask.estimateAt).format("YYYY-MM-DDT23:59:59-03:00"),
             doneAt: false,
-            userId: parserInt(userId)
+            userId: parseInt(userId)
         })                
     }catch(e){
         showError(e)
@@ -41,6 +41,15 @@ export const toggleTask = async (toggledTask) => {
     }
 } 
 
+export const deleteTask = async (taskId) => {
+    try{
+        const url = `${server}/tasks/${taskId}`
+        await axios.delete(url)  
+    }catch(e){
+        showError(e)
+    }
+} 
+
 export const fetchUser = async () => {    
     try{
         const { userId } = await getUser()
@@ -51,3 +60,4 @@ export const fetchUser = async () => {
         showError(e)
     }
 }
+
