@@ -3,8 +3,8 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 // const server = Platform.OS === 'ios'
 //     ? 'http://localhost:3000' : 'http://10.0.2.2:3000'
-//const server = "https://api-restful-tasks.herokuapp.com"
-const server = "http://192.168.0.16:3005"
+const server = "https://api-restful-tasks.herokuapp.com"
+//const server = "http://192.168.0.16:3005"
 
 function showError(err) {
     if(err.response && err.response.data) {
