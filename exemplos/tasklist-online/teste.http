@@ -55,7 +55,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9saXZpZ
 
 {
   "desc": "Teste",  
-  "estimatedAt": "2020-08-28",
+  "estimateAt": "2020-08-28",
   "userId": 2
 
 }
@@ -64,7 +64,7 @@ GET http://localhost:3005/tasks?userId=2 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9saXZpZXJAbWFpbC5jb20iLCJpYXQiOjE1OTMzODY3NjMsImV4cCI6MTU5MzM5MDM2Mywic3ViIjoiMiJ9.ep8GtY3OG2Idn4Tk54vbxdw3uwQgz8uJUyUtkAw4CPc
 
 ###
-GET http://localhost:3005/tasks?userId=1&_sort=estimatedAt&_order=asc&estimatedAt_gte=2020-06-28&estimatedAt=2020-06-28 HTTP/1.1
+GET http://localhost:3005/tasks?userId=1&_sort=estimateAt&_order=asc&estimateAt_gte=2020-06-28&estimateAt=2020-06-28 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVkdWFyZG8ubm9icmVnYUBnbWFpbC5jb20iLCJpYXQiOjE1OTMzODcxNDcsImV4cCI6MTU5MzM5MDc0Nywic3ViIjoiMSJ9.K0_kpdJ6TwxKkoEaKiOil-kICbMRxaZaeGVCGKXMeJ0
 
 ###

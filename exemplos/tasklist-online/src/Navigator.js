@@ -1,80 +1,85 @@
-import { createAppContainer, createSwitchNavigator } from 'react-navigation'
-//import { createDrawerNavigator } from 'react-navigation-drawer'
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useFonts } from '@use-expo/font';
+import { AppLoading } from 'expo';
+import {
+    createDrawerNavigator,
+} from '@react-navigation/drawer';
 
+import commonStyles from './commomStyles'
 import Auth from './screens/Auth'
 import TaskList from './screens/TaskListExpo'
+import Menu from './components/Menu'
+import AuthOrApp from './components/AuthOrApp'
 
-// import AuthOrApp from './screens/AuthOrApp'
-// import Menu from './screens/Menu'
-// import commonStyles from './commonStyles'
+const Drawer = createDrawerNavigator();
+function DrawerNavigator() {
+    return (
+        <Drawer.Navigator
+            drawerContent={props => <Menu {...props} />}
+            drawerContentOptions={{
+                activeTintColor: '#800',
+                itemStyle: {
 
-// const menuConfig = {
-//     initialRouteName: 'Today',
-//     contentComponent: Menu,
-//     contentOptions: {
-//         labelStyle: {
-//             fontFamily: commonStyles.fontFamily,
-//             fontWeight: 'normal',
-//             fontSize: 20
-//         },
-//         activeLabelStyle: {
-//             color: '#080',
-//             fontWeight: 'bold',
-//         }
-//     }
-// }
+                },
+                labelStyle: {
+                    fontSize: 20,
+                    fontFamily: commonStyles.fontFamily,
+                },
+            }}>
+            <Drawer.Screen
+                name="Today"
+                options={{ title: 'Hoje' }}>
+                {props => <TaskList title='Hoje' daysAhead={0} {...props} />}
+            </Drawer.Screen>
+            <Drawer.Screen
+                name="Tomorrow"
+                options={{ title: 'Amanhã' }}>
+                {props => <TaskList title='Amanhã' daysAhead={1} {...props} />}
+            </Drawer.Screen>
+            <Drawer.Screen
+                name="Week"
+                options={{ title: 'Semana' }} >
+                {props => <TaskList title='Semana' daysAhead={7} {...props} />}
+            </Drawer.Screen>
+            <Drawer.Screen
+                name="Month"
+                options={{ title: 'Mês' }} >
+                {props => <TaskList title='Mês' daysAhead={30} {...props} />}
+            </Drawer.Screen>
+        </Drawer.Navigator>
+    );
+}
 
-// const menuRoutes = {
-//     Today: {
-//         name: 'Today',
-//         screen: props => <TaskList title='Hoje' daysAhead={0} {...props} />,
-//         navigationOptions: {
-//             title: 'Hoje'
-//         }
-//     },
-//     Tomorrow: {
-//         name: 'Tomorrow',
-//         screen: props => <TaskList title='Amanhã' daysAhead={1} {...props} />,
-//         navigationOptions: {
-//             title: 'Amanhã'
-//         }
-//     },
-//     Week: {
-//         name: 'Week',
-//         screen: props => <TaskList title='Semana' daysAhead={7} {...props} />,
-//         navigationOptions: {
-//             title: 'Semana'
-//         }
-//     },
-//     Month: {
-//         name: 'Month',
-//         screen: props => <TaskList title='Mês' daysAhead={30} {...props} />,
-//         navigationOptions: {
-//             title: 'Mês'
-//         }
-//     },
-// }
+const Stack = createStackNavigator();
+function Navigator() {
+    let [fontsLoaded] = useFonts({
+        'Lato': require('../assets/fonts/Lato.ttf'),
+    });
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    } else {
 
-//const menuNavigator = createDrawerNavigator(menuRoutes, menuConfig)
-
-const mainRoutes = {
-    // AuthOrApp: {
-    //     name: 'AuthOrApp',
-    //     screen: AuthOrApp
-    // },
-    Auth: {
-        name: 'Auth',
-        screen: Auth
-    },
-    Home: {
-        name: 'Home',
-        //screen: menuNavigator
-        screen: TaskList
+        return (
+            <NavigationContainer >
+                <Stack.Navigator initialRouteName="AuthOrApp">
+                    <Stack.Screen name="AuthOrApp"
+                        component={AuthOrApp}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen name="Auth"
+                        component={Auth}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen name="Home"
+                        component={DrawerNavigator}
+                        options={{ headerShown: false }}
+                    />
+                </Stack.Navigator>
+            </NavigationContainer>
+        )
     }
 }
 
-const mainNavigator = createSwitchNavigator(mainRoutes, {
-    //initialRouteName: 'AuthOrApp'
-    initialRouteName: 'Auth'
-})
-export default createAppContainer(mainNavigator)
+export default Navigator

@@ -14,12 +14,12 @@ import backgroudImage from '../../assets/imgs/login.jpg'
 import commomStyles from '../commomStyles'
 import { loadFontsExpo } from '../util/expoFonts'
 import AuthInput from '../components/AuthInput'
-import {server, showError, showSuccess} from '../commom'
+import {server, showError, showSuccess, storeAuthToken} from '../commom'
 import axios from 'axios'
 
 const INITIAL_STATE = {   
-    email: '',
-    password: '',
+    email: 'eduardo@gmail.com',
+    password: '123456',
     name: '',
     confirmPassword: '',
     isNewUser: false
@@ -68,6 +68,7 @@ export default class Auth extends Component {
                 password: this.state.password
             })
             axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`
+            await storeAuthToken(res.data)
             this.props.navigation.navigate('Home')
         }catch(e){
             showError(e)

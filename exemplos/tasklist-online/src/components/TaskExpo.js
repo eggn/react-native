@@ -9,7 +9,8 @@ import commomStyle from '../commomStyles'
 
 
 function renderCheckView(doneAt) {
-    if (doneAt != null) {
+    //Mudança 6 integração com backend - mudar pra false
+    if (doneAt != false) {
         return (
             <View style={styles.done}>
                 <Icon name="check" size={20} color='#FFF' />
@@ -22,24 +23,6 @@ function renderCheckView(doneAt) {
     }
 }
 
-const renderRightAction = () =>{
-    return (
-        <TouchableOpacity style={styles.right}
-            onPress={() => props.onDelete && props.onDelete(props.id)}>
-            <Icon name="trash" size={30} color='#FFF' />
-        </TouchableOpacity>
-    )
-}
-
-const renderLeftAction = () => {
-    return (
-        <View style={styles.left}>
-            <Icon name="trash" size={20} color='#FFF'
-                style={styles.excludeIcon} />
-            <Text style={styles.excludeText}>Excluir</Text>
-        </View>
-    )
-}
 // export default (props) => {
 //     const doneOrNotStyle = props.doneAt != null ? { textDecorationLine: 'line-through' } : {}
 //     const date = props.doneAt ? props.doneAt : props.estimateAt
@@ -65,16 +48,16 @@ const renderLeftAction = () => {
 //     )
 // }
 export default (props) => {               
-    const doneOrNotStyle = props.doneAt != null ? { textDecorationLine: 'line-through' } : {}
+    //Mudança 5 integração com backend
+    //const doneOrNotStyle = props.doneAt != null ? { textDecorationLine: 'line-through' } : {}
+    const doneOrNotStyle = props.doneAt != false ? { textDecorationLine: 'line-through' } : {}
     const date = props.doneAt ? props.doneAt : props.estimateAt
     const formattedDate = moment(date).locale('pt-br').format('ddd, D [de] MMMM')
-    
     return (
 
         <View style={styles.container}>
             <View style={styles.checkContainer}>
                 <TouchableWithoutFeedback onPress={() => props.toggleTask(props.id)}>
-                    
                     {renderCheckView(props.doneAt)}
                 </TouchableWithoutFeedback>
             </View>

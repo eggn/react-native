@@ -38,15 +38,16 @@ export default class AddTask extends Component {
     
     renderDatePicker = () => {
         const dateString = moment(this.state.date).format('ddd, D [de] MMMM [de] YYYY')
-        let datePicker = <DateTimePicker
-            value={this.state.date}
-            onChange={(_/*ignorar o event*/, date) => {
-                this.setState({date,showDatePicker:false})                
-            }
-            }
-            mode='date'
-            minimumDate={new Date()}
-        />
+        let datePicker =
+            <DateTimePicker
+                mode='date'
+                value={this.state.date}
+                onChange={(_, date) => {
+                    date = date || new Date()                    
+                    this.setState({ date, showDatePicker: false })
+                }}
+                minimumDate={new Date()}
+            />
         if(Platform.OS === 'android') {
             datePicker = (
                 <View style={styles.dataRow}>
